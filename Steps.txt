@@ -1,0 +1,55 @@
+Step-by-Step Instructions
+Introduction to Monitoring Memory Utilization:
+
+Understand that CPU utilization is straightforward to monitor using CloudWatch, but memory utilization requires a CloudWatch agent since it accesses system-level metrics.
+Create an IAM Role:
+
+Go to the IAM console.
+Click on Roles > Create Role.
+Select AWS service and choose EC2.
+Attach the policies:
+CloudWatchFullAccess
+AmazonSSMFullAccess (needed for the System Manager).
+Name the role (e.g., EC2CloudWatchRole) and create it.
+Create a Parameter in the System Manager:
+
+Navigate to System Manager > Parameter Store.
+Click Create Parameter.
+Specify the name, description, and data type.
+In the Value field, paste the JSON document for fetching memory utilization.
+Click Create Parameter.
+Launch an EC2 Instance:
+
+In the EC2 console, click Launch Instance.
+Choose an Amazon Linux AMI and select your instance type.
+Under Configure Instance, select the IAM role created earlier.
+In the User Data section, add the commands to install the CloudWatch agent and fetch the configuration from the Parameter Store.
+Review and launch the instance.
+Installing and Configuring the CloudWatch Agent:
+
+Follow the commands in the user data to:
+Download the CloudWatch agent from AWS S3.
+Unzip and install the agent.
+Fetch the configuration from the Parameter Store.
+Verify the Installation:
+
+Connect to your EC2 instance using SSH.
+Check the status of the CloudWatch agent to ensure it is running.
+View Memory Utilization in CloudWatch:
+
+Open the CloudWatch console.
+Go to Metrics and find the CWAgent namespace.
+Select your instance ID to view memory utilization metrics.
+Create an Alarm for Memory Utilization:
+
+In CloudWatch, navigate to Alarms > Create Alarm.
+Select the memory utilization metric.
+Set the threshold (e.g., greater than 90%).
+Configure notifications if needed and create the alarm.
+Monitor Alarm States:
+
+Refresh your alarms to check their states. Initially, they may show as insufficient data.
+Once data is available, the alarm state will change based on the configured thresholds.
+Conclusion:
+
+You can now monitor memory utilization of your EC2 instance and set alarms based on thresholds.
